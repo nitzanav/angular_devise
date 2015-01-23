@@ -5,7 +5,10 @@ devise.provider('Auth', function AuthProvider() {
     var paths = {
         login: '/users/sign_in.json',
         logout: '/users/sign_out.json',
-        register: '/users.json'
+        register: '/users.json',
+        update: '/users.json',
+        forgotPassword: '/users/password.json',
+        resetPassword: '/users/password.json'
     };
 
     /**
@@ -14,7 +17,10 @@ devise.provider('Auth', function AuthProvider() {
     var methods = {
         login: 'POST',
         logout: 'DELETE',
-        register: 'POST'
+        register: 'POST',
+        update: 'POST',
+        forgotPassword: 'POST',
+        resetPassword: 'PUT'
     };
 
     /**
@@ -221,7 +227,31 @@ devise.provider('Auth', function AuthProvider() {
                 return $http(httpConfig('register', creds))
                     .then(service.parse)
                     .then(save)
-                    .then(broadcast('new-registration'));
+                    .then(broadcast('register'));
+            },
+            
+            update: function(creds) {
+                creds = creds || {};
+                return $http(httpConfig('update', creds))
+                    .then(service.parse)
+                    .then(save)
+                    .then(broadcast('update'));
+            },
+
+            forgotPassword: function(creds) {
+                creds = creds || {};
+                return $http(httpConfig('forgotPassword', creds))
+                    .then(service.parse)
+                    .then(save)
+                    .then(broadcast('forgot-password'));
+            },
+
+            resetPassword: function(creds) {
+                creds = creds || {};
+                return $http(httpConfig('resetPassword', creds))
+                    .then(service.parse)
+                    .then(save)
+                    .then(broadcast('reset-password'));
             },
 
             /**
