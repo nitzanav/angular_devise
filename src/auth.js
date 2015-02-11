@@ -255,23 +255,15 @@ devise.provider('Auth', function AuthProvider() {
             },
 
             /**
-             * A helper function that will return a promise with the currentUser.
-             * Three different outcomes can happen:
-             *  1. Auth has authenticated a user, and will resolve with it
-             *  2. Auth has not authenticated a user but the server has an
-             *      authenticated session, Auth will attempt to retrieve that
-             *      session and resolve with its user.
-             *  3. Neither Auth nor the server has an authenticated session,
-             *      and will reject with an unauthenticated error.
+             * A helper function that will return the currentUser.
+             * Two different outcomes can happen:
+             *  1. Auth has authenticated a user, and will return it
+             *  2. Auth has not authenticated a user, and will return null
              *
-             * @returns {Promise} A $http promise that will be resolved or
-             *                  rejected by the server.
-             */
-            currentUser: function() {
-                if (service.isAuthenticated()) {
-                    return $q.when(service._currentUser);
-                }
-                return service.login();
+             * @returns {Object} The authenticated user
+             * */
+            getCurrentUser: function() {
+                return service._currentUser;
             },
 
             /**
