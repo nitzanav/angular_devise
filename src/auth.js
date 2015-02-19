@@ -169,7 +169,10 @@ devise.provider('Auth', function AuthProvider() {
 
                 creds = creds || {};
                 return $http(httpConfig('login', creds))
-                    .then(service.parse)
+                    .then(service.parse, function() {
+                        // do not resolve with error
+                        return null;
+                    })
                     .then(save)
                     .then(function(user) {
                         if (withCredentials && !loggedIn) {
