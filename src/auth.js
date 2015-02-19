@@ -169,10 +169,7 @@ devise.provider('Auth', function AuthProvider() {
 
                 creds = creds || {};
                 return $http(httpConfig('login', creds))
-                    .then(service.parse, function() {
-                        // do not resolve with error
-                        return null;
-                    })
+                    .then(service.parse)
                     .then(save)
                     .then(function(user) {
                         if (withCredentials && !loggedIn) {
@@ -180,10 +177,7 @@ devise.provider('Auth', function AuthProvider() {
                         }
                         return user;
                     })
-                    .then(broadcast('login')).then(function() {
-                        // do not resolve with user
-                        return null;
-                    });
+                    .then(broadcast('login'));
             },
 
             /**
@@ -278,11 +272,7 @@ devise.provider('Auth', function AuthProvider() {
                 if (service.isAuthenticated()) {
                     return $q.when(service._currentUser);
                 }
-                return service.login().then(function() {
-                    return $q.when(service._currentUser);
-                }, function() {
-                    return $q.when(service._currentUser);
-                });
+                return service.login();
             },
 
             /**
